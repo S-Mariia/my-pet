@@ -1,6 +1,6 @@
-# PetProject
+# My Pet Project
 
-Welcome to **PetProject**, a modern web application built with Next.js, TypeScript, Tailwind.css, Firebase, and several other powerful libraries. This project aims to provide a seamless and interactive user experience for pet lovers.
+Welcome to **My Pet Project**, a modern web application built with Next.js, TypeScript, Tailwind.css, Firebase, and several other powerful libraries. This project aims to provide a seamless and interactive user experience for pet lovers.
 
 ## Table of Contents
 - [About the Project](#about-the-project)
