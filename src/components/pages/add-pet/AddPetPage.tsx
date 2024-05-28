@@ -113,16 +113,16 @@ export default function AddPetPage() {
                     <div
                         className="relative  bg-light-bg-md dark:bg-dark-gray-bg rounded-full w-[fit-content] p-[15px] shadow">
                         <div
-                            className="relative h-[120px] w-[120px]">
+                            className="relative sm:h-[120px] h-[100px] sm:w-[120px] w-[100px]">
                             <Image src={avatarUrl || logo} alt="Pet" width={100} height={100}
                                    className="w-full h-full object-cover rounded-full"/>
                             <div
-                                className='absolute top-[0px] h-[120px] w-[120px] flex items-center justify-center dark:bg-sidebar-bg-04 bg-black-bg-04 rounded-full border-[1.5px] border-solid border-circle-border'>
+                                className='absolute top-[0px] sm:h-[120px] h-[100px] sm:w-[120px] w-[100px] flex items-center justify-center dark:bg-sidebar-bg-04 bg-black-bg-04 rounded-full border-[1.5px] border-solid border-circle-border'>
                                 {preview ? <Image src={preview} alt="add new" width={100} height={100}
                                                   className="w-full h-full object-cover rounded-full"/> :
                                     <Image src={plus} alt="add new" width={35} height={35}/>}
                                 <input
-                                    className='cursor-pointer z-10000 absolute  x-0 y-0 h-[120px] w-[120px] opacity-[0] '
+                                    className='cursor-pointer z-10000 absolute  x-0 y-0 sm:h-[120px] h-[100px] sm:w-[120px] w-[100px] opacity-[0] '
                                     type="file" accept='image/*' onChange={(e) => {
                                     //@ts-ignore
                                     const file = e.target?.files[0]
@@ -145,42 +145,44 @@ export default function AddPetPage() {
                     <FormProvider {...methods}>
                         <form onSubmit={handleSubmit(onSubmit)} >
                             <div className='flex flex-wrap'>
-                                <div className='w-full pr-[10px]' >
+                                <div className='w-full ' >
                               <div className='my-[20px]'>
-                                  <p className='text-dark-gray-text dark:text-white font-400 leading-136% text-16px '>
-                                      Pet name                                   <small className='ml-[15px] text-[red] max-w-[200px] leading-[0.5] '>Attention! It is not possible to change the pet's name in the future.</small>
-                                  </p>
+                                  <div className='text-dark-gray-text dark:text-white font-400 leading-136% sm:text-16px text-14px sm:my-[20px] my-[15px]'>
+                                      Pet name                                   <small className='hidden sm:inline ml-[15px] text-[red] max-w-[200px] leading-[0.5]'>Attention! It is not possible to change the pet's name in the future.</small>
+
+                                  </div>
+                                  <small className='sm:hidden text-[red] leading-[0.5]'>Attention! It is not possible to change the pet's name in the future.</small>
                               </div>
                                     <ControlInput type="text" placeholder="Pet name"
                                                   errorMessage={uniquenessCheck||errors?.petName?.message} {...register('petName')}/>
                                 </div>
-                                <div className='min-w-[50%]  pr-[10px]'><p
-                                    className='text-dark-gray-text dark:text-white font-400 leading-136% text-16px my-[20px]'>Birth
+                                <div className='sm:min-w-[50%] min-w-full sm:pr-[10px]'><p
+                                    className='text-dark-gray-text dark:text-white font-400 leading-136% sm:text-16px text-14px sm:my-[20px] my-[15px]'>Birth
                                     date</p>
                                     <Calendar name={'birthday'} errorMessage={errors?.birthday?.message} control={control}/>
                                 </div>
-                                <div className='min-w-[50%] pl-[10px]'><p
-                                    className='text-dark-gray-text dark:text-white font-400 leading-136% text-16px my-[20px]'>Type</p>
-                                    <ControlInput type="text" placeholder="Type"
+                                <div className='sm:min-w-[50%] min-w-full sm:pl-[10px]'><p
+                                    className='text-dark-gray-text dark:text-white font-400 leading-136% sm:text-16px text-14px sm:my-[20px] my-[15px]'>Type</p>
+                                    <ControlInput type="text" placeholder="Cat, dog, etc."
                                                   errorMessage={errors?.type?.message} {...register('type')}/></div>
-                                <div className='min-w-[50%] pr-[10px]'><p
-                                    className='text-dark-gray-text dark:text-white font-400 leading-136% text-16px my-[20px]'>Sex</p>
+                                <div className='sm:min-w-[50%] min-w-full sm:pr-[10px]'><p
+                                    className='text-dark-gray-text dark:text-white font-400 leading-136% sm:text-16px text-14px sm:my-[20px] my-[15px]'>Sex</p>
                                     <ControlSelect
                                         options={petSexOptions}
                                         disabled={false}
                                         errorMessage={errors?.sex?.message}
                                         {...register('sex')}
                                     /></div>
-                                <div className='min-w-[50%] pl-[10px]'><p
-                                    className='text-dark-gray-text dark:text-white font-400 leading-136% text-16px my-[20px]'>Size</p>
+                                <div className='sm:min-w-[50%] min-w-full sm:pl-[10px]'><p
+                                    className='text-dark-gray-text dark:text-white font-400 leading-136% sm:text-16px text-14px sm:my-[20px] my-[15px]'>Size</p>
                                     <ControlSelect
                                         options={petSizeOptions}
                                         disabled={false}
                                         errorMessage={errors?.size?.message}
                                         {...register('size')}
                                     /></div>
-                                <div className='min-w-[50%] pr-[10px]'><p
-                                    className='text-dark-gray-text dark:text-white font-400 leading-136% text-16px my-[20px]'>Weight</p>
+                                <div className='sm:min-w-[50%] min-w-full sm:pr-[10px]'><p
+                                    className='text-dark-gray-text dark:text-white font-400 leading-136% sm:text-16px text-14px sm:my-[20px] my-[15px]'>Weight</p>
                                     <ControlInput type="text" placeholder="Weight"
                                                   errorMessage={errors?.weight?.message} {...register('weight')}/></div>
 

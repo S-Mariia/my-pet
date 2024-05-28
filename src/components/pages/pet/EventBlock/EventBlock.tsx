@@ -40,7 +40,7 @@ function EventBlock({
                 {(currentArray?.length) ? currentArray.map(i => <div key={i.id}>
                         {type !== "nutrition" &&
                             <div className='flex gap-[30px] w-full justify-between items-center mt-[15px]'>
-                                <div className='flex gap-[20px]'>
+                                <div className='flex sm:gap-[20px] sm:flex-row flex-col'>
                                     <div><p
                                         className='text-input-border-dark dark:text-input-border font-400 text-16px leading-150%'>Date</p>
                                     </div>

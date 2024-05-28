@@ -8,6 +8,15 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    screens: {
+      smm:"425px",
+      sm: '640px',
+      md: '768px',
+      'mid': "991px",
+      lg: '1024px',
+      xl: '1250px',
+      '2xl': '1536px',
+    },
     extend: {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -45,6 +54,7 @@ const config: Config = {
         '16px': '16px',
         '18px': '18px',
         '20px': '20px',
+        '24px': '24px',
         '28px': '28px',
         '34px': '34px',
       },

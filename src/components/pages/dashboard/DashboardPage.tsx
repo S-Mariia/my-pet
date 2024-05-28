@@ -40,11 +40,11 @@ export default function DashboardPage() {
     return !loading ? (<>
             <InfoSideHeader title='Pets list' arrow={false}/>
 
-            <div className='mt-[20px] flex flex-col  gap-[20px] mb-[20px]'>
+            <div className='mt-[20px] flex flex-col  gap-[20px] mb-[20px] min-h-[75%]'>
                 {petsList.length ?
-                    <div className='flex  flex-wrap'> {petsList.map((pet) =>
+                    <div className='flex  flex-wrap sm:justify-between justify-center'> {petsList.map((pet) =>
                         <PetCard pet={pet} key={pet.petId}/>)}</div> :
-                    <div className='flex flex-col items-center justify-between h-full text-sidebar-bg dark:text-white'>
+                    <div className='flex flex-col items-center justify-center h-full text-sidebar-bg dark:text-white gap-[20px] flex-1'>
                         <div className='flex flex-col items-center justify-center flex-1'><h2
                             className='font-700 text-34px leading-125% mb-[20px]'>Uh Oh!</h2>
                             <p className='dark:text-input-border leading-167% text-18px mb-[50px] max-w-[400px] text-center'>Looks
@@ -52,7 +52,7 @@ export default function DashboardPage() {
                                 you have no profiles set up at this moment, add your pet now</p>
                             <Image src={logo} alt="user" height={200} width={200}/>
                         </div>
-                        <div className='w-[420px]'>
+                        <div className='max-w-[420px]'>
                             <CustomButton type={'button'} title={'Add a pet now'}
                                           onClick={() => router.push('/pets-list/add-pet')}/>
                         </div>

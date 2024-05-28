@@ -106,7 +106,7 @@ const EditPetModal: React.FC<EditPetModalProps> = ({setIsOpenModal, handleUpdate
             }}
                  className="z-[10000000] fixed flex items-center justify-center top-0 bottom-0 left-0 right-0 h-[100%] w-[100%] bg-opacity-45 bg-black">
                 {loading?<SmallLoader/>:<div
-                    className="overflow-hidden relative w-[80%] max-w-[700px] min-h-[70%] py-6 rounded-2xl bg-white dark:bg-sidebar-bg">
+                    className="overflow-hidden relative sm:w-[80%] w-full max-w-[700px] min-h-[70%] py-6 rounded-2xl bg-white dark:bg-sidebar-bg">
                     <button
                         onClick={handleCloseModal}
                         className="absolute sm:right-[32px] z-[10000000] right-[24px] top-[24px] text-brown-500 font-semibold text-base leading-[11px] mb-4"
@@ -115,14 +115,14 @@ const EditPetModal: React.FC<EditPetModalProps> = ({setIsOpenModal, handleUpdate
                                width={24} height={24}
                                className={"h-[24px] w-[24px]"}/>
                     </button>
-                    <div className={"px-8 flex flex-col  justify-between"}>
-                        <h2 className=' font-700 leading-136% text-28px mb-[20px] dark:text-white text-dark-gray-text'>Edit information
+                    <div className="px-8 flex flex-col  justify-between">
+                        <h2 className=' font-700 leading-136% sm:text-28px text-20px max-w-[96%] sm:mb-[20px] mb-[15px] dark:text-white text-dark-gray-text'>Edit information
                             about {pet.petName}</h2>
                         <div
                             className="w-full border-input-border dark:border-input-border-dark border-[0.5px] border-solid"/>
-                        <div className='flex justify-center items-center'>
+                        <div className='flex sm:flex-row flex-col justify-center items-center'>
                             <div
-                                className="mt-[20px] relative mr-[50px] bg-light-bg-md dark:bg-dark-gray-bg rounded-full w-[fit-content] h-[fit-content] p-[15px] shadow">
+                                className="mt-[20px] relative sm:mr-[50px] bg-light-bg-md dark:bg-dark-gray-bg rounded-full w-[fit-content] h-[fit-content] p-[15px] shadow">
                                 <div
                                     className="relative h-[120px] w-[120px]">
                                     <Image src={avatarUrl || pet.avatar || logo} alt="Pet" width={100} height={100}
@@ -150,27 +150,27 @@ const EditPetModal: React.FC<EditPetModalProps> = ({setIsOpenModal, handleUpdate
                                 </div>
 
                             </div>
-                            <div className='w-[50%]'>
-                                <div className='flex w-full justify-between items-center my-[15px]'>
-                                    <div><p className='text-input-border-dark dark:text-input-border font-400 text-16px leading-150%'>Pet name</p></div>
-                                    <div><p className='text-dark-gray-text dark:text-white font-600 text-16px leading-150%'>{pet.petName}</p></div>
+                            <div className='sm:w-[50%] w-full'>
+                                <div className='flex w-full justify-between items-center sm:my-[15px] my-[10px]'>
+                                    <div><p className='text-input-border-dark dark:text-input-border font-400 sm:text-16px text-14px leading-150%'>Pet name</p></div>
+                                    <div><p className='text-dark-gray-text dark:text-white font-600 sm:text-16px text-14px leading-150%'>{pet.petName}</p></div>
                                 </div>
                                 <div className="w-full border-input-border dark:border-input-border-dark border-[0.5px] border-solid"/>
-                                <div className='flex w-full justify-between items-center my-[15px]'>
-                                    <div><p className='text-input-border-dark dark:text-input-border font-400 text-16px leading-150%'>Birth
+                                <div className='flex w-full justify-between items-center sm:my-[15px] my-[10px]'>
+                                    <div><p className='text-input-border-dark dark:text-input-border font-400 sm:text-16px text-14px leading-150%'>Birth
                                         date</p></div>
-                                    <div><p className='text-dark-gray-text dark:text-white font-600 text-16px leading-150%'>{moment(new Date(pet.birthday as string)).format("MMM Do YY")}</p></div>
+                                    <div><p className='text-dark-gray-text dark:text-white font-600 sm:text-16px text-14px leading-150%'>{moment(new Date(pet.birthday as string)).format("MMM Do YY")}</p></div>
                                 </div>
                                 <div className="w-full border-input-border dark:border-input-border-dark border-[0.5px] border-solid"/>
-                                <div className='flex w-full justify-between items-center my-[15px]'>
-                                    <div><p className='text-input-border-dark dark:text-input-border font-400 text-16px leading-150%'>Type</p></div>
-                                    <div><p className='text-dark-gray-text dark:text-white font-600 text-16px leading-150%'>{pet.type}</p></div>
+                                <div className='flex w-full justify-between items-center sm:my-[15px] my-[10px]'>
+                                    <div><p className='text-input-border-dark dark:text-input-border font-400 sm:text-16px text-14px leading-150%'>Type</p></div>
+                                    <div><p className='text-dark-gray-text dark:text-white font-600 sm:text-16px text-14px leading-150%'>{pet.type}</p></div>
                                 </div>
                                 <div className="w-full border-input-border dark:border-input-border-dark border-[0.5px] border-solid"/>
 
-                                <div className='flex w-full justify-between items-center my-[15px]'>
-                                    <div><p className='text-input-border-dark dark:text-input-border font-400 text-16px leading-150%'>Sex</p></div>
-                                    <div><p className='text-dark-gray-text dark:text-white font-600 text-16px leading-150%'>{pet.sex}</p></div>
+                                <div className='flex w-full justify-between items-center sm:my-[15px] my-[10px]'>
+                                    <div><p className='text-input-border-dark dark:text-input-border font-400 sm:text-16px text-14px leading-150%'>Sex</p></div>
+                                    <div><p className='text-dark-gray-text dark:text-white font-600 sm:text-16px text-14px leading-150%'>{pet.sex}</p></div>
                                 </div>
                             </div>
                         </div>
@@ -206,16 +206,16 @@ const EditPetModal: React.FC<EditPetModalProps> = ({setIsOpenModal, handleUpdate
                                                 {...register('sex')}
                                             /></div>
                                     </div>
-                                    <div className='min-w-[50%] pr-[10px]'><p
-                                        className='text-dark-gray-text dark:text-white font-400 leading-136% text-16px my-[20px]'>Size</p>
+                                    <div className='sm:min-w-[50%] sm:pr-[10px] min-w-full'><p
+                                        className='text-dark-gray-text dark:text-white font-400 leading-136% sm:text-16px text-14px sm:my-[20px] my-[10px]'>Size</p>
                                         <ControlSelect
                                             options={petSizeOptions}
                                             disabled={false}
                                             errorMessage={errors?.size?.message}
                                             {...register('size')}
                                         /></div>
-                                    <div className='min-w-[50%] pl-[10px]'><p
-                                        className='text-dark-gray-text dark:text-white font-400 leading-136% text-16px my-[20px]'>Weight</p>
+                                    <div className='sm:min-w-[50%] sm:pl-[10px] min-w-full'><p
+                                        className='text-dark-gray-text dark:text-white font-400 leading-136% sm:text-16px text-14px sm:my-[20px] my-[10px]'>Weight</p>
                                         <ControlInput type="text" placeholder="Weight"
                                                       errorMessage={errors?.weight?.message} {...register('weight')}/>
                                     </div>

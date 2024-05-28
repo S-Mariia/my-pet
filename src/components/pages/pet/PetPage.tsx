@@ -71,10 +71,10 @@ export default function PetPage({id}: PetPageProps) {
     return pet ? (<>
         <InfoSideHeader title={pet?.petName || 'Pet'} subtitle={(pet?.type || '') + ', ' + (pet?.sex || '')}/>
         <div className='flex mt-[30px]'>
-            <div className='mb-[30px] w-[60%] pr-[30px]'>
+            <div className='mb-[30px] md:w-[60%] w-full md:pr-[30px]'>
                 <div className='flex w-full justify-center items-center gap-[20px] '>
                     <div
-                        className="relative bg-light-bg-md dark:bg-dark-gray-bg rounded-full lg:w-[200px] w-[180px] p-[15px] shadow aspect-square">
+                        className="relative bg-light-bg-md dark:bg-dark-gray-bg rounded-full lg:w-[200px] sm:w-[180px] w-[140px] p-[15px] shadow aspect-square">
                         <div className='aspect-square  w-full'>
                             <Image src={pet.avatar || logo} alt={pet.petName || 'pet'} width={200} height={200}
                                    className="w-full aspect-square h-full object-cover rounded-full"/>
@@ -85,6 +85,29 @@ export default function PetPage({id}: PetPageProps) {
                     <button className='w-[40px] h-[40px] min-w-[30px] min-h-[30px] hover:scale-[1.05] transition duration-300 ease-in-out'
                             onClick={() => {setIsDeletePet(true)}}><Image
                         src={deleteIcon} alt="log-out" height={40} width={40}/></button>
+                </div>
+                <div
+                    className='w-full md:hidden mt-[20px]'>
+                    <p className='text-dark-gray-text dark:text-white font-600 leading-136% text-16px mb-[20px]'>Caretakers</p>
+                    <div className='flex items-center gap-3  rounded-input mt-[20px]'>
+                        <div className="bg-white dark:bg-dark-gray-bg rounded-full md:h-[70px] md:w-[70px] md:min-h-[70px] md:min-w-[70px] h-[50px] w-[50px] min-h-[50px] min-w-[50px]">
+                            <Image src={user?.photoURL || userImg} alt="user" height={80} width={80}
+                                   className="w-full aspect-square h-full object-cover rounded-full"/>
+                        </div>
+                        <div className='flex-1'>
+                            <p className='text-16px font-600 text-dark-gray-text dark:text-white leading-144%'>{user?.displayName}</p>
+                            <span className=' text-14px font-400 leading-157% w-[60%] text-dark-gray-text dark:text-white'>{user?.email}</span>
+                        </div>
+
+                    </div>
+                    {!!(pet?.caretakers?.length) && pet?.caretakers?.map((i: Caretaker, index) => <CaretakerCard
+                        onClick={() => setIsDeleteCaretaker(i)} caretaker={i} key={index + i.name}/>)}
+                    <div className='my-[20px] text-white dark:text-input-border flex items-center gap-3 '>
+                        <button type='button' onClick={() => setIsOpenModal(true)}
+                                className='h-[50px] w-[50px] min-h-[50px] min-w-[50px] flex items-center justify-center bg-light-bg-md dark:bg-dark-gray-bg rounded-full border-[1.5px] border-solid border-circle-border my-[12px]'>
+                            <Image src={plus} alt="add new" width={24} height={24}/></button>
+                        <p className='text-14px font-400 leading-22px text-circle-border'>add new</p>
+                    </div>
                 </div>
                 <div className='flex w-full justify-between items-center my-[15px]'>
                     <div><p className='text-input-border-dark dark:text-input-border font-400 text-16px leading-150%'>Gender</p></div>
@@ -105,7 +128,7 @@ export default function PetPage({id}: PetPageProps) {
                 <EventBlock pet={pet} handleUpdatePet={handleUpdatePet} type={"activity"}/>
             </div>
             <div
-                className='w-[40%] border-l-[1.5px] border-solid border-input-border dark:border-input-border-dark pl-[30px]'>
+                className='md:block hidden w-[40%] border-l-[1.5px] border-solid border-input-border dark:border-input-border-dark pl-[30px]'>
                 <p className='text-dark-gray-text dark:text-white font-600 leading-136% text-16px mb-[20px]'>Caretakers</p>
                 <div className='flex items-center gap-3  rounded-input mt-[20px]'>
                     <div className="bg-white dark:bg-dark-gray-bg rounded-full min-h-[70px] min-w-[70px] h-[70px] w-[70px]">

@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 import {useRouter} from "next/navigation";
+import {useAppDispatch} from "@/redux/hooks";
+import {setMobileMenu} from "@/redux/slices/mobileMenu/mobileMenu";
 
 type SidebarMenuItemProps = {
     src: string,
@@ -12,8 +14,11 @@ function SidebarMenuItem({
                              src, title, link,
                          }: SidebarMenuItemProps) {
     const router = useRouter();
+    const dispatch = useAppDispatch();
+
     const handleClick = () => {
         router.push(link)
+        dispatch(setMobileMenu(false))
     }
 
     return (

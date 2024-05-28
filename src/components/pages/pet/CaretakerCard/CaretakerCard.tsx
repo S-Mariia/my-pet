@@ -17,8 +17,8 @@ function CaretakerCard({
     const {theme} = useAppSelector((state) => state.theme);
     const userImg = theme === 'dark' ? userDark : userIcon;
     return (
-        <div className='flex items-center gap-3  rounded-input mt-[20px]'>
-            <div className="bg-white dark:bg-dark-gray-bg rounded-full h-[70px] w-[70px] min-h-[70px] min-w-[70px]">
+        <div className='flex items-center gap-3  rounded-input mt-[20px] max-w-[300px]'>
+            <div className="bg-white dark:bg-dark-gray-bg rounded-full md:h-[70px] md:w-[70px] md:min-h-[70px] md:min-w-[70px] h-[50px] w-[50px] min-h-[50px] min-w-[50px]">
                 <Image src={userImg} alt="user" height={80} width={80}
                        className="w-full aspect-square h-full object-cover rounded-full"/>
             </div>

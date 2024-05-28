@@ -6,7 +6,7 @@ type MainWrapperProps = {
 
 function MainWrapper({ children }:MainWrapperProps) {
   return (
-    <div className="max-w-[1440px] mx-[auto] p-[40px] h-full overflow-x-hidden">
+    <div className="max-w-[1440px] mx-[auto] md:p-[40px] p-[30px] h-full overflow-x-hidden">
       {children}
     </div>
   );

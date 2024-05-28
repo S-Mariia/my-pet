@@ -24,7 +24,7 @@ function Sidebar() {
 
 
     return (
-        <div className='min-w-[220px] w-[220px] m-[20px] flex flex-col max-h-[100%] overflow-y-auto overflow-x-hidden'>
+        <div className='min-w-[220px] mid:w-[220px] w-[100vw] mid:m-[20px] flex flex-col max-h-[100%] h-[95%] overflow-y-auto overflow-x-hidden mid:p-0 p-6'>
             <Image src={logo} alt="Pow buddy" width={174} height={38} className='mb-[30px]'/>
             <div className="w-full border-line-border dark:border-dark-gray-bg border border-solid"/>
             <div className='flex-1 max-h-[100%] overflow-y-auto overflow-x-hidden'>
@@ -47,17 +47,17 @@ function Sidebar() {
 
                 <div className='w-fit mb-[20px]'><ThemeSwitcher/></div>
             </div>
-            <div className='flex items-center gap-3 p-3 rounded-input bg-light-bg mt-[20px]'>
-                <div className="bg-white dark:bg-dark-gray-bg rounded-full w-[fit-content] ">
-                    <Image src={user?.photoURL||userImg} alt="user" height={80} width={80} className="w-full aspect-square h-full object-cover rounded-full"/>
+            <div className='flex items-center gap-2 p-3 rounded-input bg-light-bg mt-[20px]'>
+                <div className="bg-white dark:bg-dark-gray-bg rounded-full w-[fit-content] max-w-[60px]">
+                    <Image src={user?.photoURL||userImg} alt="user" height={60} width={60} className="w-full aspect-square h-full object-cover rounded-full"/>
                 </div>
                 <p className='text-16px font-600 text-white leading-144%'><span className='text-light-text text-14px font-400 leading-157% '>hello</span> {user?.displayName}</p>
-                <button className='w-[40px] h-[40px] hover:scale-[1.05] transition duration-300 ease-in-out' onClick={() => {
+                <button className='w-[30px] h-[30px]  min-w-[30px] min-h-[30px] hover:scale-[1.05] transition duration-300 ease-in-out' onClick={() => {
                     localStorage.setItem('user', 'false');
                     signOut(auth);
                     dispatch(setUser(null));
                 }}><Image
-                    src={out} alt="log-out" height={20} width={20}/></button>
+                    src={out} alt="log-out" height={20} width={20} className="w-full aspect-square h-full object-cover"/></button>
             </div>
         </div>
 

@@ -18,10 +18,11 @@ const ControlSelect = forwardRef<HTMLSelectElement, ControlSelectProps>(
                 <select
                     ref={ref}
                     disabled={disabled}
+                    style={{borderRadius: '14px!important'}}
                     {...rest}
                     className={`${
                         disabled ? 'bg-disabled-input-bg' : 'bg-[white] dark:bg-input-bg-dark'
-                    } border border-solid border-input-border dark:border-input-border-dark rounded-input px-[16px] py-[18px] font-NotoSans text-[14px] font-normal text-input-text dark:text-input-text-dark w-full`}
+                    } border border-solid border-input-border dark:border-input-border-dark rounded-input px-[16px] py-[18px] font-NotoSans text-[14px] font-normal text-input-text dark:text-input-text-dark w-full min-h-[59px] h-[59px]`}
                 >
                     {options.map((option) => (
                         <option key={option.value} value={option.value}>

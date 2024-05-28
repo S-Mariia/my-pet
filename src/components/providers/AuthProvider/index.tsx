@@ -7,12 +7,15 @@ import {useAppDispatch} from '@/redux/hooks';
 import { setUser } from '@/redux/slices/userAuth/userAuthSlice';
 import {setLoading} from "@/redux/slices/loading/loadingSlice";
 import {setTheme} from "@/redux/slices/Theme/themeSlice";
+import {useRouter} from "next/navigation";
 
 type AuthProviderProps = {
   children: ReactNode
 };
 function AuthProvider({ children }:AuthProviderProps) {
   const dispatch = useAppDispatch();
+  const router = useRouter();
+
 
   useEffect(() => {
     const initialTheme = localStorage.getItem('theme') as 'light' | 'dark';
@@ -30,6 +33,7 @@ function AuthProvider({ children }:AuthProviderProps) {
           displayName, email, phoneNumber, photoURL, uid, emailVerified,
         }));
       } else {
+        router.push('/sign-in');
         dispatch(setUser(null));
       }
     });

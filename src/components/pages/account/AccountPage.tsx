@@ -99,10 +99,10 @@ export default function AccountPage() {
 
     return (<>
             <InfoSideHeader title='Your account'/>
-            <div className='mt-[50px] flex  gap-[20px]'>
+            <div className='mt-[50px] flex  gap-[20px] sm:flex-row flex-col items-center sm:items-start'>
                 <div className='flex'>
                     <div
-                        className="relative mr-[50px] bg-light-bg-md dark:bg-dark-gray-bg rounded-full w-[fit-content]  h-[fit-content] p-[15px] shadow">
+                        className="relative sm:mr-[35px] bg-light-bg-md dark:bg-dark-gray-bg rounded-full w-[fit-content]  h-[fit-content] p-[15px] shadow">
                         <div
                             className="relative h-[120px] w-[120px] max-h-[120px] max-w-[120px]">
                             <Image src={avatarUrl || userImg} alt="user" width={100} height={100}
@@ -133,29 +133,29 @@ export default function AccountPage() {
                 </div>
 
                 <div className=' flex flex-wrap flex-col w-full gap-[20px]'>
-                    {!isUpdate && <div className='flex w-full justify-end max-w-[400px]'>
+                    {!isUpdate && <div className='flex w-full justify-end sm:max-w-[400px]'>
                         <button className='mt-[-30px]' onClick={() => {
                             setUpdate(true)
                         }}><Image src={update} alt="update" height={40} width={40}/></button>
                     </div>
                     }
-                    <div className='w-full  max-w-[400px]'><p
+                    <div className='w-full  sm:max-w-[400px]'><p
                         className='mb-[10px] text-dark-gray-text dark:text-white font-400 leading-136% text-16px'>First Name</p>
                         <CustomInput type="text" value={firstName} placeholder="First Name" setValue={setFirstName}
                                      disabled={!isUpdate}/></div>
-                    <div className='w-full max-w-[400px] '><p
+                    <div className='w-full sm:max-w-[400px] '><p
                         className='mb-[10px] text-dark-gray-text dark:text-white font-400 leading-136% text-16px'>Last Name</p>
                         <CustomInput type="text" value={lastName} placeholder="Last Name" setValue={setLastName}
                                      disabled={!isUpdate}/></div>
-                    <div className='w-full max-w-[400px]'><p
+                    <div className='w-full sm:max-w-[400px]'><p
                         className='mb-[10px] text-dark-gray-text dark:text-white font-400 leading-136% text-16px'>Email</p>
                         <CustomInput type="email" value={email} placeholder="Email" setValue={setEmail}
                                      disabled={true}/></div>
-                    {isUpdate && <div className='flex w-full max-w-[400px]'>
-                        <div className='w-[50%] pr-[15px]'><CustomButton type="button" title="Cancel" onClick={() => {
+                    {isUpdate && <div className='flex w-full flex-col-reverse sm:flex-row sm:max-w-[400px] items-center'>
+                        <div className='sm:w-[50%] w-full max-w-[200px] sm:pr-[15px] '><CustomButton type="button" title="Cancel" onClick={() => {
                             setUpdate(false)
                         }}/></div>
-                        <div className='w-[50%] pl-[15px]'><CustomButton type="button" title="Update my account" onClick={async () => {
+                        <div className='sm:w-[50%] w-full max-w-[200px] sm:pl-[15px] pb-[15px] sm:pb-0'><CustomButton type="button" title="Update my account" onClick={async () => {
                             await dispatch(setLoading(true))
                             if (avatar) {
                                 await uploadAvatar()
