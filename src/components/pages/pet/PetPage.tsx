@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useAppSelector } from "@/redux/hooks";
-import { getDatabase, ref, set } from "@firebase/database";
 import InfoSideHeader from "@/components/common/InfoSideHeader/InfoSideHeader";
 import SmallLoader from "@/components/common/SmallLoader/SmallLoader";
 import Image from "next/image";

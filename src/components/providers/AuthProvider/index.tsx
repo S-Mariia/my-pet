@@ -4,17 +4,12 @@ import React, { ReactNode, useEffect } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { setUser } from "@/redux/slices/userAuth/userAuthSlice";
 import { setTheme } from "@/redux/slices/Theme/themeSlice";
-import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/supabase/supabase-client";
 
 type AuthProviderProps = { children: ReactNode };
 
-const PUBLIC_ROUTES = ["/sign-in", "/sign-up", "/forgot-password"];
-
 function AuthProvider({ children }: AuthProviderProps) {
   const dispatch = useAppDispatch();
-  const router = useRouter();
-  const pathname = usePathname();
 
   const loadUserProfile = async (user: any) => {
     try {
@@ -59,13 +54,8 @@ function AuthProvider({ children }: AuthProviderProps) {
           emailVerified: !!user.email_confirmed_at,
         })
       );
-
-      if (PUBLIC_ROUTES.includes(pathname)) {
-        router.push("/");
-      }
     } catch (err) {
       console.error("Error loading user profile:", err);
-
       dispatch(
         setUser({
           displayName: user.user_metadata?.full_name || null,
@@ -84,27 +74,14 @@ function AuthProvider({ children }: AuthProviderProps) {
     if (initialTheme) dispatch(setTheme(initialTheme));
 
     const checkSession = async () => {
-      try {
-        const {
-          data: { session },
-          error,
-        } = await supabase.auth.getSession();
-        if (error) throw error;
-
-        if (session?.user) {
-          await loadUserProfile(session.user);
-        } else {
-          dispatch(setUser(null));
-          if (!PUBLIC_ROUTES.includes(pathname)) {
-            router.push("/sign-in");
-          }
-        }
-      } catch (err) {
-        console.error(err);
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+      if (!error && session?.user) {
+        await loadUserProfile(session.user);
+      } else {
         dispatch(setUser(null));
-        if (!PUBLIC_ROUTES.includes(pathname)) {
-          router.push("/sign-in");
-        }
       }
     };
 
@@ -116,17 +93,14 @@ function AuthProvider({ children }: AuthProviderProps) {
           await loadUserProfile(session.user);
         } else {
           dispatch(setUser(null));
-          if (!PUBLIC_ROUTES.includes(pathname)) {
-            router.push("/sign-in");
-          }
         }
       }
     );
 
     return () => authListener.subscription.unsubscribe();
-  }, [pathname]);
+  }, []);
 
-  return <main className="h-full">{children}</main>;
+  return <>{children}</>;
 }
 
 export default AuthProvider;

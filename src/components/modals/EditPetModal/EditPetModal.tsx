@@ -1,28 +1,23 @@
+"use client";
+
 import React, { useState } from "react";
 import Image from "next/image";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import CustomButton from "@/components/common/CustomButton/CustomButton";
-import Calendar from "@/components/common/Calendar/Calendar";
 import ControlInput from "@/components/common/ControlInput/ControlInput";
 import ControlSelect from "@/components/common/ControlSelect/ControlSelect";
-import { petSexOptions, petSizeOptions } from "@/constans/selectOptions";
+import { petSizeOptions } from "@/constans/selectOptions";
 import { schema } from "@/components/pages/add-pet/schema/addPet";
 import plus from "../../../../public/images/icons/plusb-white.svg";
 import dogsDark from "../../../../public/images/dashbord/dark-empty-db.svg";
 import dogsLight from "../../../../public/images/dashbord/light-empty-db.svg";
 import { useAppSelector } from "@/redux/hooks";
-import {
-  getDownloadURL,
-  getStorage,
-  ref as storageRefF,
-  uploadBytes,
-} from "firebase/storage";
 import SmallLoader from "@/components/common/SmallLoader/SmallLoader";
 import darkX from "../../../../public/images/icons/dark-close.svg";
 import lightX from "../../../../public/images/icons/close.svg";
-import moment from "moment/moment";
 import { PetData } from "@/types/petData";
+import moment from "moment/moment";
 
 type EditPetModalProps = {
   setIsOpenModal: (i: boolean) => void;
@@ -40,7 +35,6 @@ const EditPetModal: React.FC<EditPetModalProps> = ({
   const x = theme === "dark" ? darkX : lightX;
 
   const [newAvatar, setNewAvatar] = useState<File | null>(null);
-  const [avatarUrl, setAvatarUrl] = useState<string>("");
   const [preview, setPreview] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -61,26 +55,29 @@ const EditPetModal: React.FC<EditPetModalProps> = ({
   const {
     handleSubmit,
     register,
-    control,
     formState: { errors },
   } = methods;
 
   const handleCloseModal = () => setIsOpenModal(false);
 
-  const uploadAvatar = async (payload: Partial<PetData>) => {
-    if (!newAvatar) return;
+  const uploadAvatar = async (file: File) => {
     try {
-      const storage = getStorage();
-      const storageRef = storageRefF(storage, `pets/avatars/${newAvatar.name}`);
-      await uploadBytes(storageRef, newAvatar);
-      const url = await getDownloadURL(storageRef);
-      setAvatarUrl(url);
-      await handleUpdate({ ...payload, avatar: url });
+      const formData = new FormData();
+      formData.append("avatar", file);
+      formData.append("userId", pet.pet_id || Math.random().toString());
+
+      const res = await fetch("/api/upload-avatar", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Upload failed");
+
+      return data.publicUrl;
     } catch (err) {
       console.error("Error uploading avatar:", err);
-    } finally {
-      setLoading(false);
-      handleCloseModal();
+      return null;
     }
   };
 
@@ -92,23 +89,22 @@ const EditPetModal: React.FC<EditPetModalProps> = ({
     sex?: string;
     weight?: string;
   }) => {
+    setLoading(true);
+
+    let avatarUrl = pet.avatar;
+    if (newAvatar) {
+      const url = await uploadAvatar(newAvatar);
+      if (url) avatarUrl = url;
+    }
+
     const payload: Partial<PetData> = {
-      pet_name: formData.pet_name || "",
-      birthday: formData.birthday || "",
-      size: formData.size || "",
-      type: formData.type || "",
-      sex: formData.sex || "",
-      weight: formData.weight || "",
+      ...formData,
+      avatar: avatarUrl,
     };
 
-    setLoading(true);
-    if (newAvatar) {
-      await uploadAvatar(payload);
-    } else {
-      await handleUpdate(payload);
-      setLoading(false);
-      handleCloseModal();
-    }
+    await handleUpdate(payload);
+    setLoading(false);
+    handleCloseModal();
   };
 
   return (
@@ -126,6 +122,7 @@ const EditPetModal: React.FC<EditPetModalProps> = ({
           >
             <Image src={x} alt="Close" width={24} height={24} />
           </button>
+
           <div className="px-8 flex flex-col justify-between">
             <h2 className="font-700 leading-136% sm:text-28px text-20px max-w-[96%] sm:mb-[20px] mb-[15px] dark:text-white text-dark-gray-text">
               Edit information about {pet.pet_name}
@@ -136,24 +133,14 @@ const EditPetModal: React.FC<EditPetModalProps> = ({
               <div className="mt-[20px] relative sm:mr-[50px] bg-light-bg-md dark:bg-dark-gray-bg rounded-full w-[fit-content] h-[fit-content] p-[15px] shadow">
                 <div className="relative h-[120px] w-[120px]">
                   <Image
-                    src={avatarUrl || pet.avatar || logo}
+                    src={preview || pet.avatar || logo}
                     alt="Pet"
                     width={120}
                     height={120}
                     className="w-full h-full object-cover rounded-full"
                   />
                   <div className="absolute top-0 h-[120px] w-[120px] flex items-center justify-center dark:bg-sidebar-bg-04 bg-black-bg-04 rounded-full border-[1.5px] border-solid border-circle-border">
-                    {preview ? (
-                      <Image
-                        src={preview}
-                        alt="Preview"
-                        width={120}
-                        height={120}
-                        className="w-full h-full object-cover rounded-full"
-                      />
-                    ) : (
-                      <Image src={plus} alt="Add new" width={35} height={35} />
-                    )}
+                    <Image src={plus} alt="Add new" width={35} height={35} />
                     <input
                       type="file"
                       accept="image/*"
@@ -171,32 +158,6 @@ const EditPetModal: React.FC<EditPetModalProps> = ({
                     />
                   </div>
                 </div>
-              </div>
-
-              <div className="sm:w-[50%] w-full">
-                {["pet_name", "birthday", "type", "sex"].map((field) => (
-                  <div
-                    key={field}
-                    className="flex w-full justify-between items-center sm:my-[15px] my-[10px]"
-                  >
-                    <div>
-                      <p className="text-input-border-dark dark:text-input-border font-400 sm:text-16px text-14px leading-150%">
-                        {field
-                          .replace("_", " ")
-                          .replace(/\b\w/g, (l) => l.toUpperCase())}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-dark-gray-text dark:text-white font-600 sm:text-16px text-14px leading-150%">
-                        {field === "birthday"
-                          ? moment(new Date((pet as any)[field])).format(
-                              "MMM Do YY"
-                            )
-                          : (pet as any)[field]}
-                      </p>
-                    </div>
-                  </div>
-                ))}
               </div>
             </div>
 

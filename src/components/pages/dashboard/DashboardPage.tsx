@@ -38,7 +38,7 @@ export default function DashboardPage() {
   }, [petsList]);
 
   if (loading) return <SmallLoader />;
-  console.log(petsList);
+ 
   return (
     <>
       <InfoSideHeader title="Pets list" arrow={false} />
