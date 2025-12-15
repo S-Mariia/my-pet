@@ -35,7 +35,6 @@ function Sidebar() {
 
       dispatch(setUser(null));
 
-      localStorage.removeItem("user");
       localStorage.removeItem("sb-vowclvwvxuwshulffuhr-auth-token");
       router.replace("/sign-in");
     } catch (err) {

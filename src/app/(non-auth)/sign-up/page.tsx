@@ -36,7 +36,6 @@ function SignUp() {
       if (error) throw error;
       if (!data.user) throw new Error("User not created");
 
-      localStorage.setItem("user", "true");
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error
