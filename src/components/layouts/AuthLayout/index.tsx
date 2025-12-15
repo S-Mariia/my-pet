@@ -21,13 +21,16 @@ function AuthLayout({ children }: AuthLayoutProps) {
   const xIcon = theme === "dark" ? darkX : lightX;
 
   useEffect(() => {
-    if (!user) {
+    const token = localStorage.getItem("sb-vowclvwvxuwshulffuhr-auth-token");
+
+    if (!token) {
       dispatch(setLoading(true));
-      router.push("/sign-in");
-    } else {
-      dispatch(setLoading(false));
+      router.replace("/sign-in");
+      return;
     }
-  }, [user]);
+
+    dispatch(setLoading(false));
+  }, [user, dispatch, router]);
 
   const handleCloseMenu = () => dispatch(setMobileMenu(false));
 

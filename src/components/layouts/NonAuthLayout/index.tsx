@@ -24,13 +24,16 @@ function NonAuthLayout({ children }: NonAuthLayoutProps) {
   const userImg = theme === "dark" ? userDark : userIcon;
 
   useEffect(() => {
-    if (user) {
+    const token = localStorage.getItem("sb-vowclvwvxuwshulffuhr-auth-token");
+
+    if (token) {
       dispatch(setLoading(true));
-      router.push("/");
-    } else {
-      dispatch(setLoading(false));
+      router.replace("/");
+      return;
     }
-  }, [user]);
+
+    dispatch(setLoading(false));
+  }, [user, dispatch, router]);
 
   return (
     <div className="h-full bg-gradient-to-b from-gray-50 via-gray-200 to-gray-300 dark:from-[#2A3240] dark:via-[#101113] dark:to-[#101113] transition duration-300 ease-in-out">

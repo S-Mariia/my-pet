@@ -15,11 +15,14 @@ import userIcon from "../../../public/images/icons/user.svg";
 import { setUser } from "@/redux/slices/userAuth/userAuthSlice";
 import { setLoading } from "@/redux/slices/loading/loadingSlice";
 import { authService } from "@/services/auth-service";
+import { useRouter } from "next/navigation";
+
 
 function Sidebar() {
   const { user } = useAppSelector((state) => state.user);
   const { theme } = useAppSelector((state) => state.theme);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const logo = theme === "dark" ? darkLogo : lightLogo;
   const userImg = theme === "dark" ? userDark : userIcon;
@@ -33,8 +36,8 @@ function Sidebar() {
       dispatch(setUser(null));
 
       localStorage.removeItem("user");
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("persist:root");
+      localStorage.removeItem("sb-vowclvwvxuwshulffuhr-auth-token");
+      router.replace("/sign-in");
     } catch (err) {
       console.error("Error signing out:", err);
     } finally {

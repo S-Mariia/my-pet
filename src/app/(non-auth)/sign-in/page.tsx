@@ -32,8 +32,8 @@ function SignIn() {
       if (error) throw error;
       if (!data.session) throw new Error("Login failed");
 
-      localStorage.setItem("user", "true");
-
+      router.replace("/");
+      
       setEmail("");
       setPassword("");
     } catch (error) {
