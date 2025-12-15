@@ -6,7 +6,7 @@ type UserData = {
   phoneNumber?: string,
   photoURL?: string,
   uid: string,
-  emailVerified: boolean
+  emailVerified?: boolean // currently not in use
 };
 type UserType = {
   user: UserData | null

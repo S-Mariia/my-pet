@@ -34,16 +34,14 @@ function AuthLayout({ children }: AuthLayoutProps) {
 
   const handleCloseMenu = () => dispatch(setMobileMenu(false));
 
-  console.log(user?.emailVerified);
-
   return (
     <div className="h-full backdrop-blur-[50px] bg-sidebar-bg dark:bg-black-bg mid:p-[10px] flex">
-      {user && !user.emailVerified && (
+      {/* {user && !user.emailVerified && (
         <div className="fixed bg-orange-500 text-white text-center px-4 py-2 top-0 left-0 right-0 z-50">
           Please check your email for verification. An email has been sent to{" "}
           {user.email}.
         </div>
-      )}
+      )} */}
 
       <div className="h-full mid:block hidden">
         <Sidebar />

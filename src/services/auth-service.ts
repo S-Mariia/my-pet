@@ -1,20 +1,17 @@
 import { supabase } from "@/supabase/supabase-client";
 
 class AuthService {
-  async signUp(
-    email: string,
-    password: string,
-    fullName: string,
-  ) {
+  async signUp(email: string, password: string, fullName: string) {
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: fullName } },
+      options: {
+        data: { full_name: fullName },
+        emailRedirectTo: window.location.origin + "/email-confirmed",
+      },
     });
     if (authError) throw authError;
     if (!authData.user) throw new Error("User not created");
-
-    await this.upsertUserProfile({ email, full_name: fullName });
 
     return authData.user;
   }
