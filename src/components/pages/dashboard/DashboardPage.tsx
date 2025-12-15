@@ -23,14 +23,29 @@ export default function DashboardPage() {
   const logo = theme === "dark" ? dogsDark : dogsLight;
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchPets = async () => {
       if (!user?.uid) return;
-      const pets = await petService.getPetsList(user.uid);
-      setPetsList(pets);
-      setLoading(false);
+      try {
+        const pets = await petService.getPetsList(user.uid);
+        if (isMounted) {
+          setPetsList(pets);
+          setLoading(false);
+        }
+      } catch (err) {
+        if (isMounted) {
+          console.error("Failed to fetch pets:", err);
+          setLoading(false);
+        }
+      }
     };
 
     fetchPets();
+
+    return () => {
+      isMounted = false;
+    };
   }, [user]);
 
   useEffect(() => {
@@ -38,7 +53,7 @@ export default function DashboardPage() {
   }, [petsList]);
 
   if (loading) return <SmallLoader />;
- 
+
   return (
     <>
       <InfoSideHeader title="Pets list" arrow={false} />
