@@ -51,7 +51,7 @@ function AuthProvider({ children }: AuthProviderProps) {
           photoURL:
             profile?.avatar_url || user.user_metadata?.avatar_url || null,
           uid: user.id,
-          emailVerified: !!user.email_confirmed_at,
+          emailVerified: profile?.email_verified ?? false,
         })
       );
     } catch (err) {
@@ -63,7 +63,7 @@ function AuthProvider({ children }: AuthProviderProps) {
           phoneNumber: user.phone,
           photoURL: user.user_metadata?.avatar_url || null,
           uid: user.id,
-          emailVerified: !!user.email_confirmed_at,
+          emailVerified: user.email_verified ?? false,
         })
       );
     }

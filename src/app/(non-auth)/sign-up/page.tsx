@@ -7,6 +7,7 @@ import CustomInput from "@/components/common/CustomInput/CustomInput";
 import CustomButton from "@/components/common/CustomButton/CustomButton";
 import { Catamaran } from "next/font/google";
 import { showErrorToast } from "@/utils/tostify";
+import { authService } from "@/services/auth-service";
 
 const catamaran = Catamaran({ weight: ["700"], subsets: ["latin"] });
 
@@ -25,17 +26,9 @@ function SignUp() {
     }
 
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { full_name: `${firstName} ${lastName}` },
-        },
-      });
+      await authService.signUp(email, password, `${firstName} ${lastName}`);
 
-      if (error) throw error;
-      if (!data.user) throw new Error("User not created");
-
+      router.replace("/");
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error

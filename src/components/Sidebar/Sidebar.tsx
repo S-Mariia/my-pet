@@ -29,7 +29,6 @@ function Sidebar() {
 
   const handleSignOut = async () => {
     try {
-      dispatch(setLoading(true));
 
       await authService.signOut();
 
@@ -39,8 +38,6 @@ function Sidebar() {
       router.replace("/sign-in");
     } catch (err) {
       console.error("Error signing out:", err);
-    } finally {
-      dispatch(setLoading(false));
     }
   };
 

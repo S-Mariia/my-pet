@@ -9,6 +9,7 @@ import CustomButton from "@/components/common/CustomButton/CustomButton";
 import { setLoading } from "@/redux/slices/loading/loadingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { showErrorToast } from "@/utils/tostify";
+import { authService } from "@/services/auth-service";
 
 const catamaran = Catamaran({
   weight: ["700"],
@@ -24,19 +25,14 @@ function SignIn() {
   const handleSignIn = async () => {
     try {
       dispatch(setLoading(true));
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
 
-      if (error) throw error;
-      if (!data.session) throw new Error("Login failed");
+      await authService.signIn(email, password);
 
       router.replace("/");
-      
+
       setEmail("");
       setPassword("");
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error);
         const errorMessage = error.message.includes("Invalid login credentials")
@@ -53,17 +49,10 @@ function SignIn() {
     try {
       dispatch(setLoading(true));
 
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: window.location.origin,
-        },
-      });
+      const redirectUrl = await authService.signInWithGoogle();
+      console.log("Redirecting to:", redirectUrl);
 
-      if (error) throw error;
-
-      console.log("Redirecting to:", data.url);
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error);
         showErrorToast(error.message);
