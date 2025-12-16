@@ -13,6 +13,9 @@ export default function NotFoundRedirect() {
         data: { session },
       } = await supabase.auth.getSession();
 
+      const pathname = window.location.pathname;
+      if (pathname.startsWith("/reset-password")) return;
+
       if (session?.user) {
         router.replace("/");
       } else {

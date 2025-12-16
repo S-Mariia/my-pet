@@ -5,6 +5,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { setUser } from "@/redux/slices/userAuth/userAuthSlice";
 import { setTheme } from "@/redux/slices/Theme/themeSlice";
 import { supabase } from "@/supabase/supabase-client";
+import { setLoading } from "@/redux/slices/loading/loadingSlice";
 
 type AuthProviderProps = { children: ReactNode };
 
@@ -68,6 +69,8 @@ function AuthProvider({ children }: AuthProviderProps) {
   };
 
   useEffect(() => {
+    dispatch(setLoading(false))
+
     const initialTheme = localStorage.getItem("theme") as "light" | "dark";
     if (initialTheme) dispatch(setTheme(initialTheme));
 

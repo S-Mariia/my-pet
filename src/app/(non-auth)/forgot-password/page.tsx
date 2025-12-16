@@ -46,7 +46,7 @@ function ForgotPassword() {
       </h1>
       <button
         type="button"
-        onClick={() => router.push("/sign-in")}
+        onClick={() => window.location.href = "/sign-in"}
         className="w-full p-3 bg-indigo-600 rounded text-white hover:bg-indigo-500"
       >
         Ready to log in

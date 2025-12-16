@@ -16,7 +16,6 @@ export default function ResetPasswordPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [token, setToken] = useState<string | null>(null);
 
-  // Зчитування токена з хешу URL (#access_token=...)
   useEffect(() => {
     const hash = window.location.hash;
     if (hash) {

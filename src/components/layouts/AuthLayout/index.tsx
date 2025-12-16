@@ -21,24 +21,11 @@ function AuthLayout({ children }: AuthLayoutProps) {
   const xIcon = theme === "dark" ? darkX : lightX;
 
   useEffect(() => {
-    const pathname = window.location.pathname;
 
-    // Якщо ми на reset-password сторінці — не редіректимо
-    if (pathname.startsWith("/reset-password")) {
-      dispatch(setLoading(false));
-      return;
-    }
-
-    const token = localStorage.getItem("sb-vowclvwvxuwshulffuhr-auth-token");
-
-    if (!token) {
-      dispatch(setLoading(true));
+    if (user === null) {
       router.replace("/sign-in");
-      return;
     }
-
-    dispatch(setLoading(false));
-  }, [dispatch, router]);
+  }, [user, router]);
 
   const handleCloseMenu = () => dispatch(setMobileMenu(false));
 
