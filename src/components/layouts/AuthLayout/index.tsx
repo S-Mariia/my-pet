@@ -25,7 +25,7 @@ function AuthLayout({ children }: AuthLayoutProps) {
     if (token) return;
 
     router.replace("/sign-in");
-  }, [router]);
+  }, [router, user]);
 
   const handleCloseMenu = () => dispatch(setMobileMenu(false));
 

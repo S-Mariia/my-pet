@@ -1,68 +1,54 @@
 "use client";
 
 import React, { ReactNode, useEffect } from "react";
+import { supabase } from "@/supabase/supabase-client";
 import { useAppDispatch } from "@/redux/hooks";
 import { setUser } from "@/redux/slices/userAuth/userAuthSlice";
 import { setTheme } from "@/redux/slices/Theme/themeSlice";
-import { supabase } from "@/supabase/supabase-client";
+import { useRouter } from "next/navigation";
 import { setLoading } from "@/redux/slices/loading/loadingSlice";
 
-type AuthProviderProps = { children: ReactNode };
+type AuthProviderProps = {
+  children: ReactNode;
+};
 
-function AuthProvider({ children }: AuthProviderProps) {
+export default function AuthProvider({ children }: AuthProviderProps) {
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
-  const loadUserProfile = async (user: any) => {
+  const handleUser = async (user: any | null) => {
+    if (!user) {
+      dispatch(setUser(null));
+      return;
+    }
+
     try {
-      let { data: profile, error } = await supabase
+      const { data: profile } = await supabase
         .from("users")
         .select("*")
         .eq("id", user.id)
         .maybeSingle();
 
-      if (error) throw error;
-
-      if (!profile) {
-        const { data: upsertedProfile, error: upsertError } = await supabase
-          .from("users")
-          .upsert(
-            [
-              {
-                id: user.id,
-                email: user.email,
-                full_name: user.user_metadata?.full_name || "",
-                created_at: new Date().toISOString(),
-              },
-            ],
-            { onConflict: "id" }
-          )
-          .select()
-          .single();
-
-        if (upsertError) throw upsertError;
-        profile = upsertedProfile;
-      }
-
       dispatch(
         setUser({
+          uid: user.id,
+          email: user.email,
+          phoneNumber: user.phone,
           displayName:
             profile?.full_name || user.user_metadata?.full_name || null,
-          email: user.email,
-          phoneNumber: user.phone,
           photoURL:
             profile?.avatar_url || user.user_metadata?.avatar_url || null,
-          uid: user.id,
         })
       );
-    } catch (err) {
-      console.error("Error loading user profile:", err);
+    } catch (e) {
+      console.error("profile load error", e);
       dispatch(
         setUser({
-          displayName: user.user_metadata?.full_name || null,
+          uid: user.id,
           email: user.email,
           phoneNumber: user.phone,
+          displayName: user.user_metadata?.full_name || null,
           photoURL: user.user_metadata?.avatar_url || null,
-          uid: user.id,
         })
       );
     }
@@ -70,38 +56,23 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     dispatch(setLoading(false))
+    const theme = localStorage.getItem("theme") as "light" | "dark";
+    if (theme) dispatch(setTheme(theme));
 
-    const initialTheme = localStorage.getItem("theme") as "light" | "dark";
-    if (initialTheme) dispatch(setTheme(initialTheme));
+    supabase.auth.getSession().then(({ data }) => {
+      handleUser(data.session?.user ?? null);
+    });
 
-    const checkSession = async () => {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession();
-      if (!error && session?.user) {
-        await loadUserProfile(session.user);
-      } else {
-        dispatch(setUser(null));
-      }
-    };
-
-    checkSession();
-
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        if (session?.user) {
-          await loadUserProfile(session.user);
-        } else {
-          dispatch(setUser(null));
-        }
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        handleUser(session?.user ?? null);
       }
     );
 
-    return () => authListener.subscription.unsubscribe();
+    return () => {
+      listener.subscription.unsubscribe();
+    };
   }, []);
 
-  return <>{children}</>;
+  return <main className="h-full">{children}</main>;
 }
-
-export default AuthProvider;
