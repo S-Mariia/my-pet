@@ -4,11 +4,11 @@ import React, { ReactNode, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import { setMobileMenu } from "@/redux/slices/mobileMenu/mobileMenu";
-import { setLoading } from "@/redux/slices/loading/loadingSlice";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import darkX from "../../../../public/images/icons/dark-close.svg";
 import lightX from "../../../../public/images/icons/close.svg";
+import { authService } from "@/services/auth-service";
 
 type AuthLayoutProps = { children: ReactNode };
 
@@ -21,10 +21,14 @@ function AuthLayout({ children }: AuthLayoutProps) {
   const xIcon = theme === "dark" ? darkX : lightX;
 
   useEffect(() => {
-    const token = localStorage.getItem("sb-vowclvwvxuwshulffuhr-auth-token");
-    if (token) return;
+    const checkSession = async () => {
+      const session = await authService.getSession();
 
-    router.replace("/sign-in");
+      if (session) {
+        router.replace("/");
+      }
+    };
+    checkSession();
   }, [router, user]);
 
   const handleCloseMenu = () => dispatch(setMobileMenu(false));

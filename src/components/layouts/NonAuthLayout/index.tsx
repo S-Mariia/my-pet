@@ -10,7 +10,7 @@ import userIcon from "../../../../public/images/icons/user.svg";
 import userDark from "../../../../public/images/icons/user-dark.svg";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
-import { setLoading } from "@/redux/slices/loading/loadingSlice";
+import { authService } from "@/services/auth-service";
 
 type NonAuthLayoutProps = { children: ReactNode };
 
@@ -24,13 +24,15 @@ function NonAuthLayout({ children }: NonAuthLayoutProps) {
   const userImg = theme === "dark" ? userDark : userIcon;
 
   useEffect(() => {
-    const token = localStorage.getItem("sb-vowclvwvxuwshulffuhr-auth-token");
-    if (!token) return;
+    const checkSession = async () => {
+      const session = await authService.getSession();
 
-    const pathname = window.location.pathname;
-    if (pathname.startsWith("/reset-password")) return;
+      if (!session) {
+        router.replace("/sign-in");
+      }
+    };
 
-    router.replace("/");
+    checkSession();
   }, [router]);
 
   return (
