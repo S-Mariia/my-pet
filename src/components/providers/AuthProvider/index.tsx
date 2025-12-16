@@ -1,52 +1,101 @@
-'use client';
+"use client";
 
-import React, { ReactNode, useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/utils/firebase';
-import {useAppDispatch} from '@/redux/hooks';
-import { setUser } from '@/redux/slices/userAuth/userAuthSlice';
-import {setLoading} from "@/redux/slices/loading/loadingSlice";
-import {setTheme} from "@/redux/slices/Theme/themeSlice";
-import {useRouter} from "next/navigation";
+import React, { ReactNode, useEffect } from "react";
+import { supabase } from "@/supabase/supabase-client";
+import { useAppDispatch } from "@/redux/hooks";
+import { setUser } from "@/redux/slices/userAuth/userAuthSlice";
+import { setTheme } from "@/redux/slices/Theme/themeSlice";
+import { useRouter } from "next/navigation";
+import { setLoading } from "@/redux/slices/loading/loadingSlice";
 
 type AuthProviderProps = {
-  children: ReactNode
+  children: ReactNode;
 };
-function AuthProvider({ children }:AuthProviderProps) {
+
+export default function AuthProvider({ children }: AuthProviderProps) {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
+  const handleUser = async (user: any | null) => {
+    if (!user) {
+      dispatch(setUser(null));
+      return;
+    }
+
+    try {
+      let { data: profile, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (!profile) {
+        const { data: newProfile, error: upsertError } = await supabase
+          .from("users")
+          .upsert(
+            [
+              {
+                id: user.id,
+                email: user.email,
+                full_name: user.user_metadata?.full_name || "",
+                created_at: new Date().toISOString(),
+              },
+            ],
+            { onConflict: "id" }
+          )
+          .select()
+          .single();
+
+        if (upsertError) throw upsertError;
+        profile = newProfile;
+      }
+
+      dispatch(
+        setUser({
+          uid: user.id,
+          email: user.email,
+          phoneNumber: user.phone,
+          displayName:
+            profile?.full_name || user.user_metadata?.full_name || null,
+          photoURL:
+            profile?.avatar_url || user.user_metadata?.avatar_url || null,
+        })
+      );
+    } catch (e) {
+      console.error("profile load error", e);
+      dispatch(
+        setUser({
+          uid: user.id,
+          email: user.email,
+          phoneNumber: user.phone,
+          displayName: user.user_metadata?.full_name || null,
+          photoURL: user.user_metadata?.avatar_url || null,
+        })
+      );
+    }
+  };
 
   useEffect(() => {
-    const initialTheme = localStorage.getItem('theme') as 'light' | 'dark';
-    if (initialTheme) {
-      dispatch(setTheme(initialTheme));
-      dispatch(setLoading(false))
-    }
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        localStorage.setItem('user', 'true')
-        const {
-          displayName, email, phoneNumber, photoURL, uid, emailVerified,
-        } = currentUser;
-        dispatch(setUser({
-          displayName, email, phoneNumber, photoURL, uid, emailVerified,
-        }));
-      } else {
-        router.push('/sign-in');
-        dispatch(setUser(null));
-      }
+    dispatch(setLoading(false));
+    const theme = localStorage.getItem("theme") as "light" | "dark";
+    if (theme) dispatch(setTheme(theme));
+
+    supabase.auth.getSession().then(({ data }) => {
+      handleUser(data.session?.user ?? null);
     });
-    dispatch(setLoading(false))
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        handleUser(session?.user ?? null);
+      }
+    );
+
     return () => {
-      unsubscribe();
+      listener.subscription.unsubscribe();
     };
   }, []);
 
-  return (
-    <main className="h-full">
-      {children}
-    </main>
-  );
+  return <main className="h-full">{children}</main>;
 }
-export default AuthProvider;

@@ -40,7 +40,7 @@ const Calendar = forwardRef<ReactDatePicker, CalendarProps>(({
                 disabled={disabled}
                 // Use `ref` as `ReactDatePicker`
                 ref={ref as React.Ref<ReactDatePicker>}
-                className={`${disabled ? 'bg-disabled-input-bg' : 'bg-[white] dark:bg-input-bg-dark'} w-full cursor-pointer border border-solid border-input-border dark:border-input-border-dark rounded-input px-[16px] py-[18px] font-NotoSans text-[14px] font-normal text-input-text dark:text-input-text-dark w-full`}
+                className={`${disabled ? 'bg-disabled-input-bg' : 'bg-[white] dark:bg-input-bg-dark'} cursor-pointer border border-solid border-input-border dark:border-input-border-dark rounded-input px-[16px] py-[18px] font-NotoSans text-[14px] font-normal text-input-text dark:text-input-text-dark w-full`}
             />
             <Image src={calendar} alt="add new" width={35} height={35} className='pointer-events-none absolute right-[12px] top-[12px] '/>
             {!!errorMessage && <small className="text-[red] absolute bottom-[-25px] left-0 right-0 text-center">{errorMessage}</small>}
