@@ -23,11 +23,34 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     }
 
     try {
-      const { data: profile } = await supabase
+      let { data: profile, error } = await supabase
         .from("users")
         .select("*")
         .eq("id", user.id)
         .maybeSingle();
+
+      if (error) throw error;
+
+      if (!profile) {
+        const { data: newProfile, error: upsertError } = await supabase
+          .from("users")
+          .upsert(
+            [
+              {
+                id: user.id,
+                email: user.email,
+                full_name: user.user_metadata?.full_name || "",
+                created_at: new Date().toISOString(),
+              },
+            ],
+            { onConflict: "id" }
+          )
+          .select()
+          .single();
+
+        if (upsertError) throw upsertError;
+        profile = newProfile;
+      }
 
       dispatch(
         setUser({
@@ -55,7 +78,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   };
 
   useEffect(() => {
-    dispatch(setLoading(false))
+    dispatch(setLoading(false));
     const theme = localStorage.getItem("theme") as "light" | "dark";
     if (theme) dispatch(setTheme(theme));
 
