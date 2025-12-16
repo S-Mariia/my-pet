@@ -24,6 +24,13 @@ function NonAuthLayout({ children }: NonAuthLayoutProps) {
   const userImg = theme === "dark" ? userDark : userIcon;
 
   useEffect(() => {
+    const pathname = window.location.pathname;
+    
+    if (pathname.startsWith("/reset-password")) {
+      dispatch(setLoading(false));
+      return;
+    }
+
     const token = localStorage.getItem("sb-vowclvwvxuwshulffuhr-auth-token");
 
     if (token) {

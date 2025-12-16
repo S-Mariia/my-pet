@@ -22,7 +22,7 @@ function ForgotPassword() {
     if (!email.trim()) return;
     try {
       const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: "http://localhost:3000/reset-password",
       });
 
       if (error) throw error;
