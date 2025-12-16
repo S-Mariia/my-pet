@@ -19,11 +19,9 @@ function SignUp() {
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
 
-  const router = useRouter();
-
   const onSubmit = async () => {
     if (password !== confirmPassword) {
-      showErrorToast("Passwords do not match"); 
+      showErrorToast("Passwords do not match");
       return;
     }
 
@@ -33,11 +31,7 @@ function SignUp() {
       setEmailSent(true);
     } catch (error: unknown) {
       const errorMessage =
-        error instanceof Error
-          ? error.message
-          : error && typeof error === "object" && "message" in error
-          ? (error as { message: string }).message
-          : "An unknown error occurred";
+        error instanceof Error ? error.message : "An unknown error occurred";
       showErrorToast(errorMessage);
     } finally {
       setLoading(false);

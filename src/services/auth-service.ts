@@ -2,7 +2,15 @@ import { supabase } from "@/supabase/supabase-client";
 
 class AuthService {
   async signUp(email: string, password: string, fullName: string) {
-    const { data: authData, error: authError } = await supabase.auth.signUp({
+    const { data: existingUser } = await supabase
+      .from("users")
+      .select("id")
+      .eq("email", email)
+      .single();
+
+    if (existingUser) throw new Error("User with this email already exists");
+
+    const { data: authData, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -10,7 +18,8 @@ class AuthService {
         emailRedirectTo: window.location.origin + "/email-confirmed",
       },
     });
-    if (authError) throw authError;
+
+    if (error) throw error;
     if (!authData.user) throw new Error("User not created");
 
     return authData.user;
