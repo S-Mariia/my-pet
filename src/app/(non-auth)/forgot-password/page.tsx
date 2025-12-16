@@ -7,6 +7,7 @@ import CustomInput from "@/components/common/CustomInput/CustomInput";
 import CustomButton from "@/components/common/CustomButton/CustomButton";
 import { Catamaran } from "next/font/google";
 import { showSuccessToast, showErrorToast } from "@/utils/tostify";
+import { authService } from "@/services/auth-service";
 
 const catamaran = Catamaran({
   weight: ["700"],
@@ -44,13 +45,6 @@ function ForgotPassword() {
         Please check your inbox and follow the instructions to reset your
         password.
       </h1>
-      <button
-        type="button"
-        onClick={() => window.location.href = "/sign-in"}
-        className="w-full p-3 bg-indigo-600 rounded text-white hover:bg-indigo-500"
-      >
-        Ready to log in
-      </button>
     </>
   ) : (
     <>

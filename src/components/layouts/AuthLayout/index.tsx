@@ -21,11 +21,11 @@ function AuthLayout({ children }: AuthLayoutProps) {
   const xIcon = theme === "dark" ? darkX : lightX;
 
   useEffect(() => {
+    const token = localStorage.getItem("sb-vowclvwvxuwshulffuhr-auth-token");
+    if (token) return;
 
-    if (user === null) {
-      router.replace("/sign-in");
-    }
-  }, [user, router]);
+    router.replace("/sign-in");
+  }, [router]);
 
   const handleCloseMenu = () => dispatch(setMobileMenu(false));
 

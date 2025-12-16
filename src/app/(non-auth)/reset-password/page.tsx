@@ -7,6 +7,7 @@ import CustomButton from "@/components/common/CustomButton/CustomButton";
 import { showSuccessToast, showErrorToast } from "@/utils/tostify";
 import { useAppDispatch } from "@/redux/hooks";
 import { setLoading } from "@/redux/slices/loading/loadingSlice";
+import { authService } from "@/services/auth-service";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -66,6 +67,7 @@ export default function ResetPasswordPage() {
         throw new Error(data.error_description || data.error.message);
 
       showSuccessToast("Password successfully changed!");
+      await authService.signOut();
       router.replace("/sign-in");
     } catch (err: any) {
       showErrorToast(err.message || "Failed to reset password");
