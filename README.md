@@ -123,7 +123,6 @@ The project uses the following main devDependencies:
 - **Styling**: TailwindCSS for rapid and responsive design.
 - **Notifications**: `react-toastify` for elegant toast notifications.
 - **Image Processing**: `sharp` for image optimization.
-- **Firebase Integration**: Includes Firebase for backend services.
 
 ## Core Functionality
 

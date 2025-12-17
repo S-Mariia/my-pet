@@ -27,13 +27,12 @@ function NonAuthLayout({ children }: NonAuthLayoutProps) {
     const checkSession = async () => {
       const session = await authService.getSession();
 
-      if (!session) {
-        router.replace("/sign-in");
+      if (session) {
+        router.replace("/");
       }
     };
-
     checkSession();
-  }, [router]);
+  }, [router, user]);
 
   return (
     <div className="h-full bg-gradient-to-b from-gray-50 via-gray-200 to-gray-300 dark:from-[#2A3240] dark:via-[#101113] dark:to-[#101113] transition duration-300 ease-in-out">

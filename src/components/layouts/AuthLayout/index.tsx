@@ -24,12 +24,13 @@ function AuthLayout({ children }: AuthLayoutProps) {
     const checkSession = async () => {
       const session = await authService.getSession();
 
-      if (session) {
-        router.replace("/");
+      if (!session) {
+        router.replace("/sign-in");
       }
     };
+
     checkSession();
-  }, [router, user]);
+  }, [router]);
 
   const handleCloseMenu = () => dispatch(setMobileMenu(false));
 
