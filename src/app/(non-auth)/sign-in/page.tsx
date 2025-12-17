@@ -48,15 +48,8 @@ function SignIn() {
   const logGoogleUser = async () => {
     try {
       dispatch(setLoading(true));
-
-      const redirectUrl = await authService.signInWithGoogle();
-      console.log("Redirecting to:", redirectUrl);
-
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(error);
-        showErrorToast(error.message);
-      }
+      await authService.signInWithGoogle();
+    } catch (error) {
     } finally {
       dispatch(setLoading(false));
     }
