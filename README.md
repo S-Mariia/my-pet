@@ -1,6 +1,6 @@
 # My Pet Project
 
-Welcome to **My Pet Project**, a modern web application built with Next.js, TypeScript, Tailwind.css, Firebase, and several other powerful libraries. This project aims to provide a seamless and interactive user experience for pet lovers.
+Welcome to **My Pet Project**, a modern web application built with Next.js, TypeScript, Tailwind.css, Supabase, and several other powerful libraries. This project aims to provide a seamless and interactive user experience for pet lovers.
 
 ## Table of Contents
 - [About the Project](#about-the-project)
@@ -81,15 +81,20 @@ npm run lint
 
 The project uses the following main dependencies:
 
-- `@hookform/resolvers`: ^3.3.4
-- `@reduxjs/toolkit`: ^2.2.3
-- `firebase`: ^10.11.1
+- `@hookform/resolvers`: ^5.2.2
+- `@reduxjs/toolkit`: ^2.11.1
+- `@supabase/auth-helpers-nextjs`: ^0.15.0
+- `@supabase/ssr`: ^0.8.0
+- `@supabase/supabase-js`: ^2.87.1
+- `@tanstack/react-query`: ^5.90.12
+- `@tanstack/react-query-devtools`: ^5.91.1
+- `formidable`: ^3.5.4
 - `moment`: ^2.30.1
-- `next`: 14.2.3
-- `react`: ^18
-- `react-datepicker`: ^6.9.0
-- `react-dom`: ^18
-- `react-hook-form`: ^7.51.4
+- `next`: ^16.0.7
+- `react`: ^19.2.1
+- `react-datepicker`: ^9.0.0
+- `react-dom`: ^19.2.1
+- `react-hook-form`: ^7.68.0
 - `react-redux`: ^9.1.2
 - `react-toastify`: ^10.0.5
 - `sharp`: ^0.33.3
@@ -102,9 +107,9 @@ The project uses the following main devDependencies:
 
 - `@next/eslint-plugin-next`: ^14.2.3
 - `@types/node`: ^20
-- `@types/react`: ^18
+- `@types/react`: ^19.2.7
 - `@types/react-datepicker`: ^6.2.0
-- `@types/react-dom`: ^18
+- `@types/react-dom`: ^19.2.3
 - `@types/uuid`: ^9.0.8
 - `@typescript-eslint/eslint-plugin`: ^7.8.0
 - `@typescript-eslint/parser`: ^7.8.0
@@ -145,17 +150,3 @@ The project uses the following main devDependencies:
    - Add events related to health, nutrition, and activities with date and description.
    - Edit events related to health, nutrition, and activities with date and description.
    - Delete events related to health, nutrition, and activities.
-
-## Contributing
-
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-проблеми з редіректом
